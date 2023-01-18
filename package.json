@@ -1,0 +1,19 @@
+{
+  "name": "my-leetcode",
+  "version": "1.0.0",
+  "description": "Leet code problems solved using Node.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Samuel-Sendzul/my-leetcode.git"
+  },
+  "author": "Samuel Sendzul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Samuel-Sendzul/my-leetcode/issues"
+  },
+  "homepage": "https://github.com/Samuel-Sendzul/my-leetcode#readme"
+}
