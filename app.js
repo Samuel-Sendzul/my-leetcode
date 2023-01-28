@@ -1,3 +1,4 @@
 var easy = require('./easy')
+var medium = require('./medium')
 
-const a = easy.longestCommonPrefix(strs=["flower","flow","flight"])
+const a = medium.myAtoi(s="+-12")
