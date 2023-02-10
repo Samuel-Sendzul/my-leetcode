@@ -132,36 +132,65 @@ module.exports = {
    * @param {number} n
    * @return {number}
    */
-  myPow: function (x, n) {
-
+  myPowNaive: function (x, n) {
     if (x === 1) {
-      return 1
+      return 1;
     }
 
     if (x === -1) {
-        // Determine if n is even
-        if (n % 2 === 0) {
-            return 1
-        } else {
-          return -1
-        }
+      // Determine if n is even
+      if (n % 2 === 0) {
+        return 1;
+      } else {
+        return -1;
+      }
     }
 
     if (n > 0) {
-      let res = x
+      let res = x;
       for (let i = 1; i < n; i++) {
         res *= x;
       }
-      return res
-    } else if (n < 0){
-      n = Math.abs(n)
-      let res = 1 / x
+      return res;
+    } else if (n < 0) {
+      n = Math.abs(n);
+      let res = 1 / x;
       for (let i = 1; i < n; i++) {
         res *= 1 / x;
       }
-      return res
+      return res;
     } else {
-      return 1
+      return 1;
+    }
+  },
+  myPowUseLogs: function (x, n) {
+    if (x === 1) {
+      return 1;
+    }
+
+    if (n === 0) {
+      return 1;
+    }
+
+    if (x < 0) {
+      if (n > 0) {
+        let res = x;
+        for (let i = 1; i < n; i++) {
+          res *= x;
+        }
+        return res;
+      } else if (n < 0) {
+        n = Math.abs(n);
+        let res = 1 / x;
+        for (let i = 1; i < n; i++) {
+          res *= 1 / x;
+        }
+        return res;
+      } else {
+        return 1;
+      }
+    } else {
+      return Math.exp(n * Math.log(x));
     }
   },
 };
