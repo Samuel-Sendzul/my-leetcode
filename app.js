@@ -2,6 +2,6 @@ var easy = require('./easy')
 var medium = require('./medium')
 var hard= require('./hard')
 
-const a = hard.findMedianSortedArrays([3], [-2,-1])
+const a = medium.myPow(-1, 2147483647)
 
 console.log(a)

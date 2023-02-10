@@ -3,29 +3,34 @@ module.exports = {
    * @param {number} x
    * @return {number}
    */
-  reverse: function(x) {
+  reverse: function (x) {
+    let reversedInput = 0;
 
-    let reversedInput = 0
+    let xArray = ("" + x).split("");
 
-    let xArray = (""+x).split("")
-    
     if (xArray[0] === "-") {
-      xArray = xArray.slice(1)
-      reveresedArray = xArray.reverse()
-      reversedInput = parseInt(reveresedArray.join("")) * -1 < (-1) * 2**31 ? 0 : parseInt(reveresedArray.join("")) * -1
+      xArray = xArray.slice(1);
+      reveresedArray = xArray.reverse();
+      reversedInput =
+        parseInt(reveresedArray.join("")) * -1 < -1 * 2 ** 31
+          ? 0
+          : parseInt(reveresedArray.join("")) * -1;
     } else {
-      reveresedArray = xArray.reverse()
-      reversedInput = parseInt(reveresedArray.join("")) > 2**31 - 1 ? 0 :  parseInt(reveresedArray.join(""))
+      reveresedArray = xArray.reverse();
+      reversedInput =
+        parseInt(reveresedArray.join("")) > 2 ** 31 - 1
+          ? 0
+          : parseInt(reveresedArray.join(""));
     }
 
-    return reversedInput
+    return reversedInput;
   },
 
   /**
    * @param {string} s
    * @return {number}
-  */
-  myAtoi: function(s) {
+   */
+  myAtoi: function (s) {
     // Ignore leading whitespace
     const trimmedS = s.trim();
     let digits = [];
@@ -35,14 +40,14 @@ module.exports = {
       // Check if the next char is +, -
       if (i === 0) {
         if (trimmedS[i] === "+") {
-          multiplier = 1
+          multiplier = 1;
         } else if (/^\d+$/.test(trimmedS[i])) {
-          multiplier = 1
-          digits.push(trimmedS[i])
+          multiplier = 1;
+          digits.push(trimmedS[i]);
         } else if (trimmedS[i] === "-") {
-          multiplier = -1
+          multiplier = -1;
         } else {
-          return 0
+          return 0;
         }
       } else {
         // Read in the next characters until the next non-digit char (or end of the string)
@@ -52,22 +57,111 @@ module.exports = {
           break;
         }
       }
-      
     }
 
     if (digits.length === 0) {
-      return 0
+      return 0;
     }
 
-    const numericS = parseInt(digits.join("")) * multiplier
+    const numericS = parseInt(digits.join("")) * multiplier;
 
     // Clamp the integer result to the 32-bit range
-    if (numericS > 2**31 - 1) {
-      return 2**31-1
-    } else if (numericS < (-1)*2**31) {
-      return (-1)*2**31
+    if (numericS > 2 ** 31 - 1) {
+      return 2 ** 31 - 1;
+    } else if (numericS < -1 * 2 ** 31) {
+      return -1 * 2 ** 31;
     }
 
-    return numericS
-  }
-}
+    return numericS;
+  },
+
+  /**
+   * @param {string} s
+   * @return {number}
+   */
+  lengthOfLongestSubstringNaive: function (s) {
+    let substrings = [];
+    for (let i = 0; i < s.length - 1; i++) {
+      let substring = "";
+      for (let j = i; j < s.length; j++) {
+        if (!substring.includes(s[j])) {
+          substring += s[j];
+        } else {
+          break;
+        }
+      }
+      substrings.push(substring);
+    }
+
+    if (substrings.length === 0) {
+      return s.length;
+    }
+
+    const longestLength = substrings.sort(function (a, b) {
+      return b.length - a.length;
+    })[0];
+
+    return longestLength.length;
+  },
+  lengthOfLongestSubstringHashSet: function (s) {
+    let chars = {};
+
+    let left = 0;
+    let right = 0;
+
+    let res = 0;
+
+    while (right < s.length) {
+      let r = s[right];
+      chars[r] ? (chars[r] += 1) : (chars[r] = 1);
+
+      while (chars[r] > 1) {
+        let l = s[left];
+        chars[l] ? (chars[l] -= 1) : (chars[l] = -1);
+        left += 1;
+      }
+
+      res = Math.max(res, right - left + 1);
+
+      right += 1;
+    }
+    return res;
+  },
+  /**
+   * @param {number} x
+   * @param {number} n
+   * @return {number}
+   */
+  myPow: function (x, n) {
+
+    if (x === 1) {
+      return 1
+    }
+
+    if (x === -1) {
+        // Determine if n is even
+        if (n % 2 === 0) {
+            return 1
+        } else {
+          return -1
+        }
+    }
+
+    if (n > 0) {
+      let res = x
+      for (let i = 1; i < n; i++) {
+        res *= x;
+      }
+      return res
+    } else if (n < 0){
+      n = Math.abs(n)
+      let res = 1 / x
+      for (let i = 1; i < n; i++) {
+        res *= 1 / x;
+      }
+      return res
+    } else {
+      return 1
+    }
+  },
+};
