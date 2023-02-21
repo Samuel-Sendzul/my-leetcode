@@ -81,7 +81,6 @@ module.exports = {
                     }
                   }
                 }
-                // TODO Handle the naked pair
 
                 // Update the board if a single candidate coordinate remains
                 if (coordinates.length === 1) {
@@ -91,11 +90,113 @@ module.exports = {
             }
           }
         }
+
+        // Check if rows or columns can be filled
+        columns = board[0].map((col, c) => board.map((row, r) => board[r][c]));
+        let possibilities = [...Array(9).keys()]
+          .map((x) => x + 1)
+          .map((el) => el.toString());
+
+        // Check rows for fill opportunities
+        for (let k = 0; k < board.length; k++) {
+          const row = board[k];
+
+          let options = [];
+          for (let l = 0; l < columns.length; l++) {
+            let alreadyPresent = columns[l].filter((el) => !["."].includes(el));
+
+            if (row[l] === ".") {
+              options.push(
+                possibilities
+                  .filter(function (x) {
+                    return alreadyPresent.indexOf(x) < 0;
+                  })
+                  .filter(function (x) {
+                    return row.indexOf(x) < 0;
+                  })
+              );
+            } else {
+              options.push([]);
+            }
+          }
+          // Check how many occurences of each option ther3 are
+          optionCounts = {};
+          for (let option of options) {
+            for (let number of option) {
+              optionCounts[number] !== undefined
+                ? (optionCounts[number] += 1)
+                : (optionCounts[number] = 1);
+            }
+          }
+
+          const candidateElement = Object.keys(optionCounts).find(
+            (key) => optionCounts[key] === 1
+          );
+
+          if (candidateElement !== undefined) {
+            // Find the index of the option containing the candidate element
+            for (let l = 0; l < options.length; l++) {
+              if (options[l].includes(candidateElement.toString())) {
+                board[k][l] = candidateElement.toString();
+                break;
+              }
+            }
+          }
+        }
+
+        // Check columns for fill opportunities
+        for (let k = 0; k < columns.length; k++) {
+          const column = columns[k];
+
+          let options = [];
+          for (let l = 0; l < board.length; l++) {
+            let alreadyPresent = board[l].filter((el) => !["."].includes(el));
+
+            if (column[l] === ".") {
+              options.push(
+                possibilities
+                  .filter(function (x) {
+                    return alreadyPresent.indexOf(x) < 0;
+                  })
+                  .filter(function (x) {
+                    return column.indexOf(x) < 0;
+                  })
+              );
+            } else {
+              options.push([]);
+            }
+          }
+          // Check how many occurences of each option ther3 are
+          optionCounts = {};
+          for (let option of options) {
+            for (let number of option) {
+              optionCounts[number] !== undefined
+                ? (optionCounts[number] += 1)
+                : (optionCounts[number] = 1);
+            }
+          }
+
+          const candidateElement = Object.keys(optionCounts).find(
+            (key) => optionCounts[key] === 1
+          );
+
+          if (candidateElement !== undefined) {
+            // Find the index of the option containing the candidate element
+            for (let l = 0; l < options.length; l++) {
+              if (options[l].includes(candidateElement.toString())) {
+                board[l][k] = candidateElement.toString();
+                break;
+              }
+            }
+          }
+        }
+
+        // Check if solved
+        solved = board.every((currentValue, index, arr) => {
+          return !currentValue.includes(".");
+        });
       }
-      // Check if solved
-      solved = board.every((currentValue, index, arr) => {
-        return !currentValue.includes(".");
-      });
     }
+    console.log("Done");
   },
 };
