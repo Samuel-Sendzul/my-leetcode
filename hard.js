@@ -119,7 +119,7 @@ module.exports = {
               options.push([]);
             }
           }
-          // Check how many occurences of each option ther3 are
+          // Check how many occurences of each option there are
           optionCounts = {};
           for (let option of options) {
             for (let number of option) {
@@ -145,21 +145,22 @@ module.exports = {
         }
 
         // Check columns for fill opportunities
+        columns = board[0].map((col, c) => board.map((row, r) => board[r][c])); // need to reinstatiate cols incase there were updates in the row operatons
         for (let k = 0; k < columns.length; k++) {
-          const column = columns[k];
+          const col = columns[k];
 
           let options = [];
           for (let l = 0; l < board.length; l++) {
             let alreadyPresent = board[l].filter((el) => !["."].includes(el));
 
-            if (column[l] === ".") {
+            if (col[l] === ".") {
               options.push(
                 possibilities
                   .filter(function (x) {
                     return alreadyPresent.indexOf(x) < 0;
                   })
                   .filter(function (x) {
-                    return column.indexOf(x) < 0;
+                    return col.indexOf(x) < 0;
                   })
               );
             } else {
@@ -197,6 +198,7 @@ module.exports = {
         });
       }
     }
-    console.log("Done");
+    console.log("Done")
   },
+
 };
