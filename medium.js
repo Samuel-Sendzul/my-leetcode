@@ -193,4 +193,69 @@ module.exports = {
       return Math.exp(n * Math.log(x));
     }
   },
+  /**
+   * @param {character[][]} board
+   * @return {boolean}
+   */
+  isValidSudoku: function (board) {
+    const checkDuplciates = (arr) => {
+      let counts = {};
+      for (const element of arr) {
+        counts[element] = counts[element] ? counts[element] + 1 : 1;
+      }
+      for (let element in counts) {
+        if (element != "." && counts[element] > 1) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    // Check constraints
+    if (board.length !== 9) {
+      return false;
+    }
+    for (let i = 0; i < board.length; i++) {
+      if (board[i].length !== 9) {
+        return false
+      }
+      for (let j = i; j < board[i].length; j++) {
+        if (!/^\d+$/.test(board[i][j]) && board[i][j] !== ".") {
+          return false;
+        }
+      }
+    }
+
+    // Check duplicates row
+    for (let row of board) {
+      if (!checkDuplciates(row)) {
+        return false;
+      }
+    }
+
+    // Check duplicates columns
+    columns = board[0].map((col, c) => board.map((row, r) => board[r][c]));
+    for (let col of columns) {
+      if (!checkDuplciates(col)) {
+        return false;
+      }
+    }
+
+    // Check if there is a duplicate in the subgrid
+    for (i of [0, 3, 6]) {
+      for (j of [0, 3, 6]) {
+        // Extract subgrid
+        let subgrid = [];
+
+        const rows = board.slice(i, i + 3);
+        for (row of rows) {
+          subgrid.push(...row.slice(j, j + 3));
+        }
+        if (!checkDuplciates(subgrid)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  },
 };
