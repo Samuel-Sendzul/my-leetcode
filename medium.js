@@ -216,6 +216,11 @@ module.exports = {
       return false;
     }
     for (let i = 0; i < board.length; i++) {
+      // Check duplicates row
+      if (!checkDuplciates(row)) {
+        return false;
+      }
+    
       if (board[i].length !== 9) {
         return false
       }
@@ -225,13 +230,8 @@ module.exports = {
         }
       }
     }
-
-    // Check duplicates row
-    for (let row of board) {
-      if (!checkDuplciates(row)) {
-        return false;
-      }
-    }
+ 
+    
 
     // Check duplicates columns
     columns = board[0].map((col, c) => board.map((row, r) => board[r][c]));
